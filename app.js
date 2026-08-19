@@ -6618,12 +6618,13 @@ function updateDeleteContractSectionAction(){
 
 }
 
-
-/* =========================================================
-   CONFIRM DELETE SECTION
-========================================================= */
-
 async function confirmDeleteContractSection(){
+
+    /*
+     * =====================================================
+     * VALIDATE PENDING SECTION
+     * =====================================================
+     */
 
     if(
         !contractSectionPendingDelete
@@ -6650,19 +6651,26 @@ async function confirmDeleteContractSection(){
         !section
     ){
 
+        showInterfaceMessage(
+            "The selected section could not be found."
+        );
+
         return;
 
     }
 
 
     /*
-     * Never allow Home to be deleted.
+     * HOME CANNOT BE DELETED
      */
 
     if(
-        sectionId ===
-        "home"
+        sectionId === "home"
     ){
+
+        showInterfaceMessage(
+            "The Home section cannot be deleted."
+        );
 
         return;
 
@@ -6675,7 +6683,9 @@ async function confirmDeleteContractSection(){
 
 
     /*
-     * Find REAL contracts.
+     * =====================================================
+     * GET CURRENT CONTRACTS
+     * =====================================================
      */
 
     const contractsInSection =
@@ -6685,16 +6695,20 @@ async function confirmDeleteContractSection(){
         )
         .filter(
             contract =>
+
                 String(
                     contract.sectionId ||
                     "home"
                 ) ===
                 sectionId
+
         );
 
 
     /*
-     * Determine action.
+     * =====================================================
+     * READ SELECTED ACTION
+     * =====================================================
      */
 
     const selectedAction =
@@ -6703,6 +6717,11 @@ async function confirmDeleteContractSection(){
         )?.value ||
         "";
 
+
+    /*
+     * If there are no contracts, there is nothing
+     * to move. The section can simply be deleted.
+     */
 
     const action =
         contractsInSection.length === 0
@@ -6715,28 +6734,46 @@ async function confirmDeleteContractSection(){
 
 
     /*
-     * -----------------------------------------------------
-     * MOVE VALIDATION
-     * -----------------------------------------------------
+     * =====================================================
+     * VALIDATE ACTION
+     * =====================================================
      */
 
     if(
-        action ===
-        "move"
+        contractsInSection.length &&
+        action !== "delete" &&
+        action !== "move"
     ){
 
-        destinationId =
-            document
-                .getElementById(
-                    "deleteContractSectionDestination"
-                )
-                ?.value ||
-            "";
+        showInterfaceMessage(
+            "Please choose what should happen to the contracts."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * =====================================================
+     * MOVE VALIDATION
+     * =====================================================
+     */
+
+    if(
+        action === "move"
+    ){
+
+        const destinationSelect =
+            document.getElementById(
+                "deleteContractSectionDestination"
+            );
 
 
         destinationId =
             String(
-                destinationId
+                destinationSelect?.value ||
+                ""
             );
 
 
@@ -6757,8 +6794,7 @@ async function confirmDeleteContractSection(){
 
 
         if(
-            destinationId ===
-            sectionId
+            destinationId === sectionId
         ){
 
             showInterfaceMessage(
@@ -6773,52 +6809,309 @@ async function confirmDeleteContractSection(){
 
 
     /*
-     * Safety validation.
-     */
-
-    if(
-        contractsInSection.length &&
-        action !== "delete" &&
-        action !== "move"
-    ){
-
-        showInterfaceMessage(
-            "Please choose what to do with the contracts."
-        );
-
-        return;
-
-    }
-
-
-    /*
+     * =====================================================
+     * BEAUTIFUL DELETE CONFIRMATION
      * -----------------------------------------------------
-     * FINAL DELETE WARNING
-     * -----------------------------------------------------
+     * Only required when contracts are being permanently
+     * deleted.
+     * =====================================================
      */
 
     if(
         action === "delete" &&
-        contractsInSection.length
+        contractsInSection.length > 0
     ){
 
         const confirmed =
-            window.confirm(
-                `This section contains ${contractsInSection.length} contract${
-                    contractsInSection.length === 1
-                        ? ""
-                        : "s"
-                }.
+            await new Promise(
+                resolve => {
 
-Deleting the section will permanently delete ${
-                    contractsInSection.length === 1
-                        ? "this contract"
-                        : "these contracts"
-                }.
+                    /*
+                     * -------------------------------------------------
+                     * CREATE CONFIRMATION MODAL
+                     * -------------------------------------------------
+                     */
 
-Continue?`
+                    const confirmationModal =
+                        createDynamicModal(
+
+                            "confirmDeleteContractsModal",
+
+                            "DELETE CONTRACTS",
+
+                            "Permanent action required"
+
+                        );
+
+
+                    /*
+                     * -------------------------------------------------
+                     * BODY
+                     * -------------------------------------------------
+                     */
+
+                    confirmationModal.body.innerHTML = `
+
+                        <div class="delete-confirmation-content">
+
+                            <div class="delete-confirmation-icon">
+
+                                <span>!</span>
+
+                            </div>
+
+
+                            <div class="delete-confirmation-text">
+
+                                <div
+                                    class="
+                                        delete-confirmation-heading
+                                    "
+                                >
+
+                                    Delete contracts permanently?
+
+                                </div>
+
+
+                                <p>
+
+                                    The section
+
+                                    <strong>
+                                        ${uiEscape(sectionName)}
+                                    </strong>
+
+                                    contains
+
+                                    <strong>
+                                        ${contractsInSection.length}
+                                        ${
+                                            contractsInSection.length === 1
+                                                ? "contract"
+                                                : "contracts"
+                                        }
+                                    </strong>.
+
+                                </p>
+
+
+                                <p>
+
+                                    Deleting this section will
+                                    permanently remove these contracts
+                                    and their dashboard records.
+
+                                </p>
+
+
+                                <div
+                                    class="
+                                        delete-confirmation-warning
+                                    "
+                                >
+
+                                    <span>!</span>
+
+                                    <span>
+                                        This action cannot be undone.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+
+                    /*
+                     * -------------------------------------------------
+                     * FOOTER
+                     * -------------------------------------------------
+                     */
+
+                    confirmationModal.footer.innerHTML = `
+
+                        <button
+                            type="button"
+                            class="modal-secondary-button"
+                            id="cancelDeleteContractsButton"
+                        >
+
+                            CANCEL
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="
+                                modal-primary-button
+                                delete-danger-confirm-button
+                            "
+                            id="confirmDeleteContractsButton"
+                        >
+
+                            DELETE CONTRACTS
+
+                        </button>
+
+                    `;
+
+
+                    /*
+                     * -------------------------------------------------
+                     * OPEN MODAL FIRST
+                     *
+                     * Important:
+                     * The modal must exist in the DOM before we
+                     * query the buttons.
+                     * -------------------------------------------------
+                     */
+
+                    confirmationModal.open();
+
+
+                    /*
+                     * -------------------------------------------------
+                     * GET BUTTONS AFTER OPEN
+                     * -------------------------------------------------
+                     */
+
+                    const cancelButton =
+                        document.getElementById(
+                            "cancelDeleteContractsButton"
+                        );
+
+
+                    const confirmButton =
+                        document.getElementById(
+                            "confirmDeleteContractsButton"
+                        );
+
+
+                    /*
+                     * -------------------------------------------------
+                     * CANCEL
+                     * -------------------------------------------------
+                     */
+
+                    if(
+                        cancelButton
+                    ){
+
+                        cancelButton.onclick =
+                            function(){
+
+                                closeDynamicModal(
+                                    "confirmDeleteContractsModal"
+                                );
+
+
+                                resolve(
+                                    false
+                                );
+
+                            };
+
+                    }
+
+
+                    /*
+                     * -------------------------------------------------
+                     * CONFIRM
+                     * -------------------------------------------------
+                     */
+
+                    if(
+                        confirmButton
+                    ){
+
+                        confirmButton.onclick =
+                            async function(){
+
+                                /*
+                                 * Prevent double clicks.
+                                 */
+
+                                if(
+                                    confirmButton.disabled
+                                ){
+
+                                    return;
+
+                                }
+
+
+                                confirmButton.disabled =
+                                    true;
+
+
+                                confirmButton.textContent =
+                                    "DELETING...";
+
+
+                                /*
+                                 * Close confirmation modal
+                                 * before starting Firebase work.
+                                 */
+
+                                closeDynamicModal(
+                                    "confirmDeleteContractsModal"
+                                );
+
+
+                                resolve(
+                                    true
+                                );
+
+                            };
+
+                    }
+
+
+                    /*
+                     * -------------------------------------------------
+                     * SAFETY FALLBACK
+                     *
+                     * If the dynamic modal system somehow failed
+                     * to create either button, do not leave a
+                     * Promise hanging forever.
+                     * -------------------------------------------------
+                     */
+
+                    if(
+                        !cancelButton ||
+                        !confirmButton
+                    ){
+
+                        console.error(
+                            "DELETE CONFIRMATION BUTTONS NOT FOUND."
+                        );
+
+
+                        closeDynamicModal(
+                            "confirmDeleteContractsModal"
+                        );
+
+
+                        resolve(
+                            false
+                        );
+
+                    }
+
+                }
             );
 
+
+        /*
+         * User cancelled the operation.
+         *
+         * Leave the original Delete Section modal open.
+         */
 
         if(
             !confirmed
@@ -6831,26 +7124,35 @@ Continue?`
     }
 
 
+    /*
+     * =====================================================
+     * EXECUTION
+     * =====================================================
+     */
+
     try{
 
         /*
-         * Disable button during operation.
+         * -------------------------------------------------
+         * Disable original Delete Section button
+         * -------------------------------------------------
          */
 
-        const confirmButton =
+        const originalConfirmButton =
             document.getElementById(
                 "confirmDeleteContractSectionButton"
             );
 
 
         if(
-            confirmButton
+            originalConfirmButton
         ){
 
-            confirmButton.disabled =
+            originalConfirmButton.disabled =
                 true;
 
-            confirmButton.textContent =
+
+            originalConfirmButton.textContent =
                 action === "move"
                     ? "MOVING..."
                     : "DELETING...";
@@ -6865,8 +7167,7 @@ Continue?`
          */
 
         if(
-            action ===
-            "delete"
+            action === "delete"
         ){
 
             for(
@@ -6884,6 +7185,10 @@ Continue?`
                 );
 
 
+                /*
+                 * Remove immediately from local cache.
+                 */
+
                 delete window.contractsCache[
                     contract.id
                 ];
@@ -6899,9 +7204,8 @@ Continue?`
          * =================================================
          */
 
-        if(
-            action ===
-            "move"
+        else if(
+            action === "move"
         ){
 
             for(
@@ -6937,6 +7241,10 @@ Continue?`
                 );
 
 
+                /*
+                 * Update local cache immediately.
+                 */
+
                 window.contractsCache[
                     contract.id
                 ] =
@@ -6949,7 +7257,7 @@ Continue?`
 
         /*
          * =================================================
-         * REMOVE SECTION
+         * DELETE SECTION FROM LOCAL STRUCTURE
          * =================================================
          */
 
@@ -6960,7 +7268,7 @@ Continue?`
 
         /*
          * =================================================
-         * RECALCULATE COUNTERS
+         * RECALCULATE SECTION COUNTS
          * =================================================
          */
 
@@ -6982,11 +7290,13 @@ Continue?`
                     )
                     .filter(
                         contract =>
+
                             String(
                                 contract.sectionId ||
                                 "home"
                             ) ===
                             String(id)
+
                     )
                     .length;
 
@@ -6996,7 +7306,7 @@ Continue?`
 
         /*
          * =================================================
-         * SAVE SECTIONS
+         * SAVE SECTION STRUCTURE
          * =================================================
          */
 
@@ -7005,16 +7315,26 @@ Continue?`
 
         /*
          * =================================================
-         * REFRESH CONTRACT DATA
+         * RELOAD CONTRACTS
+         *
+         * Guarantees that local cache is aligned with
+         * Firebase after deletion / movement.
          * =================================================
          */
 
-        await loadContracts();
+        if(
+            typeof loadContracts ===
+            "function"
+        ){
+
+            await loadContracts();
+
+        }
 
 
         /*
          * =================================================
-         * RETURN HOME IF CURRENT SECTION WAS DELETED
+         * CURRENT SECTION
          * =================================================
          */
 
@@ -7028,13 +7348,101 @@ Continue?`
             contractCurrentSectionId =
                 null;
 
-            await showContractHome();
+
+            if(
+                typeof showContractHome ===
+                "function"
+            ){
+
+                await showContractHome();
+
+            }
 
         }
 
 
         /*
-         * Clear pending state.
+         * =================================================
+         * REFRESH SECTION UI
+         * =================================================
+         */
+
+        if(
+            typeof renderContractSections ===
+            "function"
+        ){
+
+            renderContractSections();
+
+        }
+
+
+        if(
+            typeof renderContractHomeData ===
+            "function"
+        ){
+
+            renderContractHomeData();
+
+        }
+
+
+        /*
+         * =================================================
+         * REFRESH PAYMENT ALERTS
+         * =================================================
+         *
+         * Critical:
+         * deleted contracts must disappear immediately.
+         * =================================================
+         */
+
+        if(
+            typeof renderContractPaymentAlerts ===
+            "function"
+        ){
+
+            await renderContractPaymentAlerts();
+
+        }
+
+
+        /*
+         * =================================================
+         * REFRESH PAYMENT ISSUES
+         * =================================================
+         */
+
+        if(
+            typeof renderContractPaymentIssues ===
+            "function"
+        ){
+
+            await renderContractPaymentIssues();
+
+        }
+
+
+        /*
+         * =================================================
+         * REFRESH ANY PAYMENT DASHBOARD DATA
+         * =================================================
+         */
+
+        if(
+            typeof renderPaymentDashboard ===
+            "function"
+        ){
+
+            await renderPaymentDashboard();
+
+        }
+
+
+        /*
+         * =================================================
+         * CLEAR PENDING DELETE STATE
+         * =================================================
          */
 
         contractSectionPendingDelete =
@@ -7042,21 +7450,14 @@ Continue?`
 
 
         /*
-         * Close modal.
+         * =================================================
+         * CLOSE ORIGINAL DELETE SECTION MODAL
+         * =================================================
          */
 
         closeDynamicModal(
             "deleteContractSectionModal"
         );
-
-
-        /*
-         * Refresh dashboard.
-         */
-
-        renderContractSections();
-
-        renderContractHomeData();
 
 
         /*
@@ -7066,8 +7467,7 @@ Continue?`
          */
 
         if(
-            action ===
-            "move"
+            action === "move"
         ){
 
             showInterfaceMessage(
@@ -7083,7 +7483,7 @@ Continue?`
 
         }
         else if(
-            contractsInSection.length
+            contractsInSection.length > 0
         ){
 
             showInterfaceMessage(
@@ -7111,6 +7511,12 @@ Continue?`
     }
     catch(error){
 
+        /*
+         * =================================================
+         * ERROR HANDLING
+         * =================================================
+         */
+
         console.error(
             "DELETE CONTRACT SECTION ERROR:",
             error
@@ -7123,23 +7529,24 @@ Continue?`
 
 
         /*
-         * Re-enable button if something fails.
+         * Re-enable original button.
          */
 
-        const confirmButton =
+        const originalConfirmButton =
             document.getElementById(
                 "confirmDeleteContractSectionButton"
             );
 
 
         if(
-            confirmButton
+            originalConfirmButton
         ){
 
-            confirmButton.disabled =
+            originalConfirmButton.disabled =
                 false;
 
-            confirmButton.textContent =
+
+            originalConfirmButton.textContent =
                 action === "move"
                     ? "MOVE & DELETE SECTION"
                     : "DELETE SECTION";
@@ -7149,7 +7556,6 @@ Continue?`
     }
 
 }
-
 
 /* =========================================================
    RETURN TO CONTRACT HOME
