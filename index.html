@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Ryanair Financial Dashboard
+    </title>
+
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="ryanair-logo-page.png"
+    >
+
+    <!-- Montserrat -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Main stylesheet -->
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         APPLICATION
+    ====================================================== -->
+
+    <div id="app">
+
+
+        <!-- =================================================
+             LOADING SCREEN
+        ================================================== -->
+
+        <div
+            id="loadingScreen"
+            class="loading-screen"
+        >
+
+            <div class="loading-content">
+
+
+                <!-- Ryanair logo -->
+
+                <img
+                    src="ryanair-logo-2.png"
+                    alt="Ryanair"
+                    class="loading-logo"
+                >
+
+
+                <!-- Title -->
+
+                <h1 class="loading-title">
+
+                    FINANCIAL DASHBOARD
+
+                </h1>
+
+
+                <p class="loading-subtitle">
+
+                    Financial Management Platform
+
+                </p>
+
+
+                <!-- Loading progress -->
+
+                <div class="loading-progress-wrapper">
+
+                    <div
+                        id="loadingProgress"
+                        class="loading-progress"
+                    ></div>
+
+                </div>
+
+
+                <div class="loading-information">
+
+                    <span id="loadingMessage">
+
+                        Initialising...
+
+                    </span>
+
+
+                    <span id="loadingPercentage">
+
+                        0%
+
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             HOME PAGE
+        ================================================== -->
+
+        <main
+            id="homePage"
+            class="home-page"
+        >
+
+
+            <!-- =============================================
+                 USER CARD
+            ============================================== -->
+
+            <div
+    id="homeUserCard"
+    class="home-user-card"
+    onclick="toggleUserMenu(event)"
+>
+
+                <div
+                    id="homeUserAvatar"
+                    class="home-user-avatar"
+                >
+
+                    GU
+
+                </div>
+
+
+                <div class="home-user-information">
+
+
+                    <span class="home-user-welcome">
+
+                        Welcome,
+
+                    </span>
+
+
+                    <strong
+                        id="homeUserName"
+                        class="home-user-name"
+                    >
+
+                        Guest User
+
+                    </strong>
+
+
+                    <span
+                        id="homeUserRole"
+                        class="home-user-role"
+                    >
+
+                        User
+
+                    </span>
+
+
+                    <span class="home-user-last-login-label">
+
+                        LAST LOGIN
+
+                    </span>
+
+
+                    <span
+                        id="homeUserLastLogin"
+                        class="home-user-last-login"
+                    >
+
+                        -
+
+                    </span>
+
+
+                    <span
+                        id="homeUserStatus"
+                        class="home-user-status"
+                    >
+
+                        -
+
+                    </span>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 HOME GLASS PANEL
+            ============================================== -->
+
+            <section class="home-panel">
+
+
+                <!-- Ryanair logo -->
+
+                <img
+                    src="ryanair-logo-2.png"
+                    alt="Ryanair"
+                    class="home-logo"
+                >
+
+
+                <!-- Main title -->
+
+                <h1 class="home-title">
+
+                    FINANCIAL DASHBOARD
+
+                </h1>
+
+
+                <p class="home-subtitle">
+
+                    Financial Management Platform
+
+                </p>
+
+
+                <!-- =========================================
+                     MAIN HOME BUTTON
+                ========================================== -->
+
+                <div class="home-actions">
+
+
+                    <button
+                        id="contractManagementButton"
+                        class="home-action-button"
+                        type="button"
+                        onclick="openContractManagement()"
+                    >
+
+                        CONTRACT MANAGEMENT
+
+                    </button>
+
+
+                </div>
+
+
+                <!-- =========================================
+                     BOTTOM INFORMATION BAR
+                ========================================== -->
+
+                <div class="home-information-bar">
+
+
+                    <div class="home-information-item">
+
+                        <span class="information-label">
+
+                            BASE
+
+                        </span>
+
+                        <strong class="information-value">
+
+                            OPO - PORTO
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="home-information-item">
+
+                        <span class="information-label">
+
+                            DATE
+
+                        </span>
+
+                        <strong
+                            id="homeDate"
+                            class="information-value"
+                        >
+
+                            --
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="home-information-item">
+
+                        <span class="information-label">
+
+                            LOCAL TIME
+
+                        </span>
+
+                        <strong
+                            id="homeTime"
+                            class="information-value"
+                        >
+
+                            --
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="home-information-item">
+
+                        <span class="information-label">
+
+                            PLATFORM
+
+                        </span>
+
+                        <strong class="information-value">
+
+                            VERSION 1.0
+
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- Version -->
+
+                <div class="home-version">
+
+                    FINANCIAL DASHBOARD · VERSION 1.0
+
+                </div>
+
+
+            </section>
+
+        </main>
+
+
+        <!-- =================================================
+             DASHBOARD APPLICATION
+        ================================================== -->
+
+        <div
+            id="dashboard"
+            class="dashboard"
+        >
+
+
+            <!-- =============================================
+                 COMMON HEADER
+            ============================================== -->
+
+            <header
+                id="commonHeader"
+                class="common-header"
+            >
+
+
+                <!-- Left navigation -->
+
+                <nav class="common-header-navigation">
+
+
+                    <button
+                        id="homeNavigationButton"
+                        class="header-navigation-button"
+                        type="button"
+                        onclick="showHome()"
+                    >
+
+                        HOME
+
+                    </button>
+
+
+                    <button
+                        id="contractNavigationButton"
+                        class="header-navigation-button"
+                        type="button"
+                        onclick="openContractManagement()"
+                    >
+
+                        CONTRACT MANAGEMENT
+
+                    </button>
+
+
+                </nav>
+
+
+                <!-- Right side -->
+
+                <div class="common-header-right">
+
+
+                    <!-- Clock -->
+
+                    <div
+                        id="headerClock"
+                        class="header-clock"
+                    >
+
+                        --
+
+                    </div>
+
+
+                    <!-- User -->
+
+                    <button
+                        id="headerUser"
+                        class="header-user"
+                        type="button"
+                        onclick="toggleUserMenu(event)"
+                    >
+
+
+                        <div
+                            id="headerUserAvatar"
+                            class="header-user-avatar"
+                        >
+
+                            GU
+
+                        </div>
+
+
+                        <div class="header-user-information">
+
+
+                            <strong
+                                id="headerUserName"
+                                class="header-user-name"
+                            >
+
+                                Guest User
+
+                            </strong>
+
+
+                            <span
+                                id="headerUserRole"
+                                class="header-user-role"
+                            >
+
+                                User
+
+                            </span>
+
+
+                        </div>
+
+
+                    </button>
+
+
+                </div>
+
+            </header>
+
+
+            <!-- =============================================
+                 USER MENU
+            ============================================== -->
+
+            <div
+                id="userMenu"
+                class="user-menu"
+            >
+
+
+                <div class="user-menu-profile">
+
+
+                    <div
+                        id="menuUserAvatar"
+                        class="menu-user-avatar"
+                    >
+
+                        GU
+
+                    </div>
+
+
+                    <div class="menu-user-information">
+
+
+                        <strong
+                            id="menuUserName"
+                            class="menu-user-name"
+                        >
+
+                            Guest User
+
+                        </strong>
+
+
+                        <span
+                            id="menuUserRole"
+                            class="menu-user-role"
+                        >
+
+                            User
+
+                        </span>
+
+
+                    </div>
+
+                </div>
+
+
+                <div class="user-menu-divider"></div>
+
+
+                <button
+                    id="userManagementButton"
+                    class="user-menu-button"
+                    type="button"
+                    onclick="openUserManagement()"
+                >
+
+                    User Management
+
+                </button>
+
+                <button
+                    id="logsButton"
+                    class="user-menu-button"
+                    type="button"
+                    onclick="openLogs()"
+                >
+
+                     Logs
+
+                </button>
+
+                <button
+                    id="userSettingsButton"
+                    class="user-menu-button"
+                    type="button"
+                    onclick="openUserSettings()"
+                >
+
+                    Settings
+
+                </button>
+
+
+                <button
+                    id="logoutButton"
+                    class="user-menu-button"
+                    type="button"
+                    onclick="openLogoutConfirmation()"
+                >
+
+                    Logout
+
+                </button>
+
+
+            </div>
+
+
+            <!-- =============================================
+                 CONTRACT MANAGEMENT
+            ============================================== -->
+
+            <main
+                id="contractManagementPage"
+                class="dashboard-page"
+            >
+
+
+                <!-- =========================================
+                     SPECIFIC HEADER
+                ========================================== -->
+
+                <section
+                    id="contractHeader"
+                    class="specific-header"
+                >
+
+
+                    <div class="specific-header-left">
+
+
+                        <img
+                            src="ryanair-logo-2.png"
+                            alt="Ryanair"
+                            class="specific-header-logo"
+                        >
+
+
+                        <div class="specific-header-title">
+
+
+                            <h1>
+
+                                <strong>
+
+                                    CONTRACT MANAGEMENT
+
+                                </strong>
+
+                                <span>
+
+                                    FINANCIAL DASHBOARD
+
+                                </span>
+
+                            </h1>
+
+
+                            <p>
+
+                                Financial Management
+
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div
+    id="contractHeaderActions"
+    class="specific-header-actions"
+>
+
+    <button
+        type="button"
+        class="contract-action-button contract-action-green"
+        onclick="exportDashboardReport()"
+    >
+
+        EXPORT REPORT
+
+    </button>
+
+    <button
+        type="button"
+        class="contract-action-button contract-action-white"
+        onclick="addContractSection()"
+    >
+
+        ADD SECTION
+
+    </button>
+
+
+    <button
+        type="button"
+        class="contract-action-button contract-action-red"
+        onclick="deleteContractSection()"
+    >
+
+        DELETE SECTION
+
+    </button>
+
+
+    <button
+        type="button"
+        class="contract-action-button contract-action-yellow"
+        onclick="openCreateContract()"
+    >
+
+        ADD CONTRACT
+
+    </button>
+
+</div>
+
+
+                </section>
+
+
+               <section
+    id="contractContent"
+    class="page-content contract-management-content"
+>
+<div
+    class="contract-management-home"
+>
+
+    <!-- =================================================
+         CONTRACT SECTIONS
+    ================================================== -->
+
+    <section
+        id="contractSections"
+        class="contract-sections-section"
+    >
+
+        <div
+            class="contract-section-heading"
+        >
+
+            <div>
+
+                <span
+                    class="contract-section-eyebrow"
+                >
+
+                    CONTRACT LIBRARY
+
+                </span>
+
+
+                <h2>
+
+                    Sections
+
+                </h2>
+
+
+                <p>
+
+                    Organise your contracts by
+                    department, company or purpose.
+
+                </p>
+<div
+    class="contract-section-techline"
+>
+
+    <span></span>
+    <span></span>
+    <span></span>
+
+</div>
+            </div>
+
+        </div>
+
+
+        <div
+            id="contractSectionsGrid"
+            class="contract-sections-grid"
+        >
+
+
+            <!-- HOME SECTION -->
+
+            <button
+                type="button"
+                class="
+                    contract-section-card
+                    contract-section-card-home
+                "
+                onclick="openContractSection('home')"
+            >
+
+              <span
+    class="contract-section-card-icon"
+    aria-hidden="true"
+>
+    <span class="contract-icon-home"></span>
+</span>
+
+
+                <span
+                    class="contract-section-card-content"
+                >
+
+                    <strong>
+
+                        Home
+
+                    </strong>
+
+
+                    <small>
+
+                        General Overview
+
+                    </small>
+
+                </span>
+
+
+                <span
+                    class="contract-section-card-arrow"
+                >
+
+                    →
+
+                </span>
+
+            </button>
+
+
+            <!-- USER SECTIONS WILL BE ADDED HERE -->
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SEARCH
+    ================================================== -->
+
+    <section
+        class="contract-search-section"
+    >
+
+        <div
+            class="contract-search-box"
+        >
+
+            <span
+                class="contract-search-icon"
+                aria-hidden="true"
+            >
+
+                🔍
+
+            </span>
+
+
+            <input
+                id="contractSearchInput"
+                type="search"
+                autocomplete="off"
+                placeholder="
+                    Search contracts, companies or keywords...
+                "
+                oninput="filterContractHome()"
+            >
+
+
+            <button
+                type="button"
+                class="contract-search-clear"
+                onclick="clearContractSearch()"
+                aria-label="Clear search"
+            >
+
+                ×
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ALERTS
+    ================================================== -->
+
+    <section
+        class="contract-dashboard-section"
+        id="contractAlertsSection"
+    >
+
+        <div
+            class="contract-dashboard-section-header"
+        >
+
+            <div
+                class="contract-dashboard-section-title"
+            >
+
+                <span
+                    class="
+                        contract-dashboard-icon
+                        contract-alert-icon
+                    "
+                >
+
+                    !
+
+                </span>
+
+
+                <div>
+
+                    <span
+                        class="contract-section-eyebrow"
+                    >
+
+                        REMINDERS
+
+                    </span>
+
+
+                    <h2>
+
+                        Payment Alerts
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <span
+                class="contract-section-count"
+                id="contractPaymentAlertCount"
+            >
+
+                0
+
+            </span>
+
+        </div>
+
+
+        <div
+            id="contractPaymentAlerts"
+            class="contract-alert-list"
+        >
+
+            <div
+                class="contract-empty-state"
+            >
+
+                <span>
+
+                    ✓
+
+                </span>
+
+
+                <div>
+
+                    <strong>
+
+                        No payment alerts
+
+                    </strong>
+
+
+                    <p>
+
+                        Contracts approaching their
+                        payment date will appear here.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    
+<!-- =================================================
+     PAYMENT ISSUES
+================================================= -->
+
+<section
+    class="contract-dashboard-section contract-payment-issues-section"
+    id="contractIssuesSection"
+>
+
+    <div
+        class="contract-dashboard-section-header"
+    >
+
+        <div
+            class="contract-dashboard-section-title"
+        >
+
+            <span
+                class="
+                    contract-dashboard-icon
+                    contract-issues-icon
+                "
+            >
+                ⚠
+            </span>
+
+
+            <div>
+
+                <span
+                    class="contract-section-eyebrow"
+                >
+                    ATTENTION
+                </span>
+
+
+                <h2>
+                    Payment Issues
+                </h2>
+
+
+                <p
+                    class="contract-dashboard-section-subtitle"
+                >
+                    Payments that were rejected or
+                    require further attention.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <span
+            class="contract-section-count contract-issues-count"
+            id="contractIssuesCount"
+        >
+            0
+        </span>
+
+    </div>
+
+
+    <div
+        id="contractPaymentIssues"
+        class="contract-payment-issues-grid"
+    >
+
+        <div
+            class="contract-payment-issues-empty"
+        >
+
+            <div
+                class="contract-payment-issues-empty-icon"
+            >
+                ✓
+            </div>
+
+
+            <div>
+
+                <strong>
+                    No payment issues
+                </strong>
+
+
+                <p>
+                    Rejected payments and payment
+                    anomalies will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+    <!-- =================================================
+         RECENT CONTRACTS
+    ================================================== -->
+
+    <section
+        class="contract-dashboard-section"
+        id="contractRecentSection"
+    >
+
+        <div
+            class="contract-dashboard-section-header"
+        >
+
+            <div
+                class="contract-dashboard-section-title"
+            >
+
+                <span
+                    class="
+                        contract-dashboard-icon
+                        contract-recent-icon
+                    "
+                >
+
+                    ↻
+
+                </span>
+
+
+                <div>
+
+                    <span
+                        class="contract-section-eyebrow"
+                    >
+
+                        ACTIVITY
+
+                    </span>
+
+
+                    <h2>
+
+                        Recently Added
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <span
+                class="contract-section-count"
+            >
+
+                5
+
+            </span>
+
+        </div>
+
+
+        <div
+            id="recentContractsList"
+            class="recent-contracts-list"
+        >
+
+            <div
+                class="contract-empty-state"
+            >
+
+                <span>
+
+                    📄
+
+                </span>
+
+
+                <div>
+
+                    <strong>
+
+                        No contracts yet
+
+                    </strong>
+
+
+                    <p>
+
+                        Your five most recently added
+                        contracts will appear here.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+    
+</div>
+
+</section>
+
+
+            </main>
+
+
+            <!-- =============================================
+                 USER MANAGEMENT
+            ============================================== -->
+
+            <main
+                id="userManagementPage"
+                class="dashboard-page"
+            >
+
+
+                <!-- Specific header -->
+
+                <section class="specific-header">
+
+
+                    <div class="specific-header-left">
+
+
+                        <img
+                            src="ryanair-logo-2.png"
+                            alt="Ryanair"
+                            class="specific-header-logo"
+                        >
+
+
+                        <div class="specific-header-title">
+
+
+                            <h1>
+
+                                <strong>
+
+                                    USER MANAGEMENT
+
+                                </strong>
+
+                                <span>
+
+                                    FINANCIAL DASHBOARD
+
+                                </span>
+
+                            </h1>
+
+
+                            <p>
+
+                                User & Access Management
+
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="specific-header-actions">
+
+
+                        <button
+    id="addUserButton"
+    class="header-action-button"
+    type="button"
+    onclick="openAddUser()"
+>
+
+                            ADD USER
+
+                        </button>
+
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- User content -->
+
+                <section class="page-content">
+
+
+                    <div
+                        id="usersContent"
+                        class="users-content"
+                    >
+
+                        <!-- Users will be added later -->
+
+                    </div>
+
+
+                </section>
+
+
+            </main>
+
+
+        </div>
+
+
+    </div>
+
+<!-- =========================================================
+     USER MANAGEMENT MODAL
+========================================================== -->
+
+<div
+    id="userManagementModal"
+    class="modal-overlay"
+>
+
+
+    <div class="modal-window modal-window-large">
+
+
+        <!-- =================================================
+             MODAL HEADER
+        ================================================== -->
+
+        <div class="modal-header">
+
+
+            <div class="modal-header-title">
+
+
+                <div class="modal-header-icon">
+
+                    👥
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+
+                        USER MANAGEMENT
+
+                    </h2>
+
+
+                    <p>
+
+                        Manage Financial Dashboard users and access
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                id="closeUserManagementModal"
+                class="modal-close-button"
+                type="button"
+                onclick="closeUserManagement()"
+            >
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+        <!-- =================================================
+             MODAL TOOLBAR
+        ================================================== -->
+
+        <div class="modal-toolbar">
+
+
+            <div class="modal-search-wrapper">
+
+
+                <span class="modal-search-icon">
+
+                    🔍
+
+                </span>
+
+
+                <input
+    id="userSearchInput"
+    class="modal-search-input"
+    type="text"
+    placeholder="Search users..."
+    oninput="applyUserManagementFilters()"
+>
+
+
+            </div>
+
+
+            <button
+                id="modalAddUserButton"
+                class="modal-primary-button"
+                type="button"
+                onclick="openAddUser()"
+            >
+
+                + ADD USER
+
+            </button>
+
+
+        </div>
+
+
+        <!-- =================================================
+             USER LIST
+        ================================================== -->
+
+        <div
+            id="userManagementList"
+            class="modal-body user-management-list"
+        >
+
+
+            <!--
+
+                Users will be rendered here later.
+
+            -->
+
+
+            <div class="modal-empty-state">
+
+
+                <div class="modal-empty-icon">
+
+                    👤
+
+                </div>
+
+
+                <h3>
+
+                    No users loaded
+
+                </h3>
+
+
+                <p>
+
+                    User data will be connected to Firebase later.
+
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     USER SETTINGS MODAL
+========================================================== -->
+
+<div
+    id="userSettingsModal"
+    class="modal-overlay"
+>
+
+
+    <div class="modal-window modal-window-medium">
+
+
+        <!-- =================================================
+             MODAL HEADER
+        ================================================== -->
+
+        <div class="modal-header">
+
+
+            <div class="modal-header-title">
+
+
+                <div class="modal-header-icon">
+
+                    ⚙
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+
+                        USER SETTINGS
+
+                    </h2>
+
+
+                    <p>
+
+                        Manage your profile and preferences
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+    id="closeUserSettingsModal"
+    class="modal-close-button"
+    type="button"
+    onclick="closeUserSettings()"
+>
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+        <!-- =================================================
+             SETTINGS BODY
+        ================================================== -->
+
+        <div class="modal-body settings-modal-body">
+
+
+            <!-- =============================================
+                 PROFILE PREVIEW
+            ============================================== -->
+
+            <div class="settings-profile-card">
+
+
+                <div
+                    id="settingsAvatar"
+                    class="settings-avatar"
+                >
+
+                    GU
+
+                </div>
+
+
+                <div class="settings-profile-information">
+
+
+                    <strong
+                        id="settingsUserName"
+                    >
+
+                        Guest User
+
+                    </strong>
+
+
+                    <span
+                        id="settingsUserRole"
+                    >
+
+                        User
+
+                    </span>
+
+
+                </div>
+
+
+                <button
+                    id="changePhotoButton"
+                    class="secondary-button"
+                    type="button"
+                    onclick="changeProfilePhoto()"
+                >
+
+                    CHANGE PHOTO
+
+                </button>
+
+
+            </div>
+
+
+            <!-- =============================================
+                 PROFILE INFORMATION
+            ============================================== -->
+
+            <div class="settings-section">
+
+
+                <div class="settings-section-title">
+
+                    PROFILE INFORMATION
+
+                </div>
+
+
+                <div class="settings-form-grid">
+
+
+                    <div class="settings-field">
+
+
+                        <label>
+
+                            Full Name
+
+                        </label>
+
+
+                        <input
+                            id="settingsFullName"
+                            type="text"
+                            placeholder="Full Name"
+                        >
+
+
+                    </div>
+
+
+                    <div class="settings-field">
+
+
+                        <label>
+
+                            Username
+
+                        </label>
+
+
+                        <input
+                            id="settingsUsername"
+                            type="text"
+                            placeholder="Username"
+                            disabled
+                        >
+
+
+                    </div>
+
+
+                    <div class="settings-field">
+
+
+                        <label>
+
+                            Role
+
+                        </label>
+
+
+                        <input
+                            id="settingsRole"
+                            type="text"
+                            placeholder="Role"
+                            disabled
+                        >
+
+
+                    </div>
+
+
+                    <div class="settings-field">
+
+
+                        <label>
+
+                            Email
+
+                        </label>
+
+
+                        <input
+                            id="settingsEmail"
+                            type="email"
+                            placeholder="Email"
+                        >
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =============================================
+                 SECURITY
+            ============================================== -->
+
+            <div class="settings-section">
+
+
+                <div class="settings-section-title">
+
+                    SECURITY
+
+                </div>
+
+
+                <button
+                    id="changePasswordButton"
+                    class="settings-action-row"
+                    type="button"
+                    onclick="openChangePassword()"
+                >
+
+
+                    <span class="settings-action-icon">
+
+                        🔐
+
+                    </span>
+
+
+                    <span class="settings-action-information">
+
+
+                        <strong>
+
+                            Change Password
+
+                        </strong>
+
+
+                        <small>
+
+                            Update your account password
+
+                        </small>
+
+
+                    </span>
+
+
+                    <span class="settings-action-arrow">
+
+                        ›
+
+                    </span>
+
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             MODAL FOOTER
+        ================================================== -->
+
+        <div class="modal-footer">
+
+
+            <button
+                id="cancelSettingsButton"
+                class="modal-secondary-button"
+                type="button"
+                onclick="closeUserSettings()"
+            >
+
+                CANCEL
+
+            </button>
+
+
+            <button
+                id="saveSettingsButton"
+                class="modal-primary-button"
+                type="button"
+                onclick="saveSettings()"
+            >
+
+                SAVE CHANGES
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     LOGS MODAL
+========================================================== -->
+
+<div
+    id="logsModal"
+    class="modal-overlay"
+>
+
+
+    <div class="modal-window modal-window-xlarge">
+
+
+        <!-- =================================================
+             MODAL HEADER
+        ================================================== -->
+
+        <div class="modal-header">
+
+
+            <div class="modal-header-title">
+
+
+                <div class="modal-header-icon">
+
+                    📋
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+
+                        SYSTEM LOGS
+
+                    </h2>
+
+
+                    <p>
+
+                        Financial Dashboard activity and audit trail
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+    id="closeLogsModal"
+    class="modal-close-button"
+    type="button"
+    onclick="closeLogs()"
+>
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+        <!-- =================================================
+             LOG FILTERS
+        ================================================== -->
+
+        <div class="modal-toolbar logs-toolbar">
+
+
+            <div class="modal-search-wrapper">
+
+
+                <span class="modal-search-icon">
+
+                    🔍
+
+                </span>
+
+
+                <input
+    id="logsSearchInput"
+    class="modal-search-input"
+    type="text"
+    placeholder="Search logs..."
+    oninput="filterLogs()"
+>
+
+
+            </div>
+
+
+            <select
+    id="logsFilter"
+    class="modal-filter-select"
+    onchange="filterLogs()"
+>
+
+                <option value="all">
+
+                    All actions
+
+                </option>
+
+
+                <option value="login">
+
+                    Login
+
+                </option>
+
+
+                <option value="logout">
+
+                    Logout
+
+                </option>
+
+
+                <option value="user">
+
+                    User Management
+
+                </option>
+
+
+                <option value="contract">
+
+                    Contract Management
+
+                </option>
+
+
+                <option value="system">
+
+                    System
+
+                </option>
+
+
+            </select>
+
+
+        </div>
+
+
+        <!-- =================================================
+             LOGS CONTENT
+        ================================================== -->
+
+        <div
+            id="logsList"
+            class="modal-body logs-list"
+        >
+
+
+            <div class="modal-empty-state">
+
+
+                <div class="modal-empty-icon">
+
+                    📋
+
+                </div>
+
+
+                <h3>
+
+                    No logs loaded
+
+                </h3>
+
+
+                <p>
+
+                    System activity will be connected later.
+
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             LOG FOOTER
+        ================================================== -->
+
+        <div class="modal-footer logs-footer">
+
+
+            <span
+                id="logsCount"
+                class="logs-count"
+            >
+
+                0 entries
+
+            </span>
+
+
+            <button
+    id="refreshLogsButton"
+    class="modal-secondary-button"
+    type="button"
+    onclick="refreshLogs()"
+>
+
+                ↻ REFRESH
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     GLOBAL FOOTER
+===================================================== -->
+
+<footer
+    id="globalFooter"
+>
+
+    <div class="global-footer-brand">
+
+        <!-- LOGO — substituir depois pelo PNG -->
+        <img
+            src="ryanair-logo-2.png"
+            alt="Ryanair Engineering & Maintenance"
+            class="global-footer-logo"
+        >
+
+    </div>
+
+
+    <div class="global-footer-center">
+
+        <span>
+            Financial Dashboard
+        </span>
+
+        <span class="global-footer-separator">
+            •
+        </span>
+
+        <span>
+            Internal Use Only
+        </span>
+
+    </div>
+
+
+    <div class="global-footer-right">
+
+        <span>
+            © 2026
+        </span>
+
+    </div>
+
+</footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"
+></script>
+
+    <script
+    type="module"
+    src="app.js"
+></script>
+
+
+</body>
+
+</html>
